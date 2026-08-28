@@ -522,18 +522,23 @@ def faq_block(limit=None, ink=False):
 # ---------------------------------------------------------------- pages
 def build_home():
     depth(0)
-    slides = [("res-living-dining-wide", "Residential", "Homes across Noida &amp; Greater Noida West"),
-              ("off-workstations-row", "Office", "Commercial fit-outs, delivered to the lease date"),
-              ("htl-lobby-chandelier", "Hospitality", "Lobbies and guest rooms built for daily use")]
-    sl = "".join(f'<div class="hero__slide{" is-active" if i == 0 else ""}">{img(n, "", eager=(i==0))}</div>'
-                 for i, (n, _, _) in enumerate(slides))
-    dots = "".join(f'<button type="button" aria-label="Slide {i+1}"></button>' for i in range(len(slides)))
-    servs = "".join(f"""<a class="serv reveal" data-d="{i%3}" href="{rel()}services.html#{s}">
+    # Hero: one slide per package, each a 3-image grid
+    sl = ""
+    for i, pk in enumerate(PACKAGES):
+        cells = "".join(
+            f'<div class="hgrid__cell hgrid__cell--{k+1}">{img(n, "", eager=(i == 0 and k == 0))}</div>'
+            for k, n in enumerate(pk["images"]))
+        sl += (f'<div class="hero__slide{" is-active" if i == 0 else ""}" '
+               f'aria-hidden="{"false" if i == 0 else "true"}">'
+               f'<div class="hgrid">{cells}</div></div>')
+    dots = "".join(f'<button type="button" aria-label="{p["name"]} package">'
+                   f'<span>{p["name"]}</span></button>' for p in PACKAGES)
+    servs = "".join(f"""<a class="serv reveal" data-d="{i%3}" href="{rel()}services.html#{s_}">
       {img(im, 'ph--4x3')}<h3>{n}</h3><p>{d}</p></a>"""
-      for i, (s, n, im, d) in enumerate(SERVICES))
+      for i, (s_, n, im, d) in enumerate(SERVICES))
 
     body = f"""
-<section class="hero">
+<section class="hero hero--grid">
   <div class="hero__slides">{sl}</div>
   <div class="container hero__content">
     <p class="hero__eyebrow">Interior Design Studio &middot; Greater Noida West</p>
@@ -545,10 +550,10 @@ def build_home():
     </div>
   </div>
   <div class="hero__arrows">
-    <button type="button" data-hero="prev" aria-label="Previous slide">{SVG['left']}</button>
-    <button type="button" data-hero="next" aria-label="Next slide">{SVG['right']}</button>
+    <button type="button" data-hero="prev" aria-label="Previous package">{SVG['left']}</button>
+    <button type="button" data-hero="next" aria-label="Next package">{SVG['right']}</button>
   </div>
-  <div class="hero__dots">{dots}</div>
+  <div class="hero__dots hero__dots--labelled">{dots}</div>
 </section>
 {stats_block()}
 {verticals_block()}

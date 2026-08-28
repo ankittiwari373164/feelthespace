@@ -130,10 +130,13 @@
 
     const go = (n) => {
       i = (n + slides.length) % slides.length;
-      slides.forEach((s, k) => s.classList.toggle('is-active', k === i));
+      slides.forEach((s, k) => {
+        s.classList.toggle('is-active', k === i);
+        s.setAttribute('aria-hidden', String(k !== i));
+      });
       dots.forEach((d, k) => d.setAttribute('aria-current', String(k === i)));
     };
-    const play = () => { if (!reduced) timer = setInterval(() => go(i + 1), 5000); };
+    const play = () => { if (!reduced) timer = setInterval(() => go(i + 1), 6000); };
     const stop = () => clearInterval(timer);
 
     dots.forEach((d, k) => d.addEventListener('click', () => { stop(); go(k); play(); }));
