@@ -274,13 +274,30 @@ ul{margin:0;padding:0}
   .hgrid{grid-template-columns:1fr 1fr;grid-template-rows:1.4fr 1fr;grid-template-areas:"a a" "b c"}
 }
 @media (max-width:640px){
-  .hero--grid{min-height:auto}
-  .hero__dots--labelled{position:static;justify-content:center;padding:16px var(--gutter) 0}
-  .hero--grid .hero__content{padding-bottom:32px}
-  .hero__dots--labelled button{padding:6px 12px}
-}
-@media (prefers-reduced-motion:reduce){
-  .hero__slide.is-active .hgrid .ph>img{transform:none}
+  /* stack: images → package pills → copy. No vh maths, no overlap. */
+  .hero--grid{min-height:0;height:auto;display:flex;flex-direction:column;align-items:stretch}
+  .hero--grid .hero__slides{position:relative;order:1;height:clamp(280px,50vh,400px)}
+  .hero__dots--labelled{
+    position:relative;order:2;inset:auto;justify-content:center;
+    margin-top:-24px;margin-bottom:0;padding-inline:var(--gutter);z-index:4;
+  }
+  .hero--grid .hero__content{
+    position:relative;order:3;height:auto;padding-block:24px 30px;background:var(--navy);
+  }
+  .hero--grid .hero__slide::after{
+    background:linear-gradient(to top,rgba(19,34,29,.55),rgba(19,34,29,.1) 50%,rgba(19,34,29,.3));
+  }
+  .hgrid{gap:4px;grid-template-columns:1fr 1fr;grid-template-rows:1.5fr 1fr;
+         grid-template-areas:"a a" "b c"}
+  .hero--grid .hero__eyebrow{letter-spacing:.14em;font-size:.62rem;margin-bottom:12px;line-height:1.5}
+  .hero--grid h1{font-size:clamp(1.95rem,9vw,2.7rem);max-width:none;line-height:1.08}
+  .hero--grid .hero__lede{font-size:.9rem;line-height:1.6;margin-top:14px;max-width:none}
+  .hero--grid .hero__actions{gap:10px;margin-top:22px}
+  .hero--grid .hero__actions .btn{flex:1 1 100%;padding:14px 18px;font-size:.72rem;letter-spacing:.06em}
+  .hero--grid .hero__arrows{top:clamp(140px,25vh,200px);max-height:none}
+  .hero--grid .hero__arrows button{width:36px;height:36px}
+  .hero__dots--labelled button{padding:7px 14px;background:rgba(19,34,29,.62);backdrop-filter:blur(4px);border-color:rgba(255,255,255,.28)}
+  .hero__dots--labelled button span{font-size:.6rem;letter-spacing:.1em}
 }
 
 /* ---------- 11. Banner ---------- */
