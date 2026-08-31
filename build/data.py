@@ -14,10 +14,27 @@ BRAND = {
     "address_l2": "Gautam Buddha Nagar, Uttar Pradesh – 201306",
     "instagram": "https://www.instagram.com/feelthespace2023/",
     "facebook": "https://www.facebook.com/feelthespacenoida2023",
-    "maps": "https://maps.google.com/?q=Gaur+City+Mall+Greater+Noida+West",
+    "youtube": "https://www.youtube.com/@feelthespace2023",
+    "maps": "https://maps.app.goo.gl/NhqQYVEnPzNqLJYy6",
+    "review": "https://maps.app.goo.gl/NhqQYVEnPzNqLJYy6",
 }
 
 WHATSAPP_TEXT = "Hi Feel The Space, I'd like to discuss an interior project."
+
+# Societies and properties actually delivered in
+SOCIETIES = [
+    ("Greater Noida West", ["Gaur Saundaryam", "NX One", "Saya Zion",
+                            "Amrapali Golf Homes", "5th Avenue, Gaur City", "Gaur City Center"]),
+    ("Noida", ["Ajnara Ambrosia", "Sector 118"]),
+    ("Ghaziabad", ["Unninav Utopia", "Raj Nagar Extension"]),
+    ("New Delhi", ["Golf View Apartments, Saket"]),
+    ("Vrindavan", ["Krishyen Dham Hotel"]),
+]
+
+# 3-step cost calculator
+CALC_TYPES = [("2 BHK", 950), ("3 BHK", 1275), ("4 BHK", 1650), ("Villa", 2400), ("Office", 1800)]
+CALC_STYLES = ["Modern Minimalist", "Classic Luxury", "Traditional"]
+CALC_SCOPES = [("Full 3D design with execution", 1.0), ("Complete turnkey", 1.0)]
 
 SERVICE_AREAS = [
     ("greater-noida-west", "Greater Noida West", "Gaur City, Ek Murti, Sector 1–4 and the surrounding societies — our home ground, minutes from the studio."),
@@ -71,35 +88,37 @@ PACKAGES = [
         "slug": "silver",
         "name": "Silver",
         "kicker": "Essential turnkey setup",
-        "rate": "₹2,050",
-        "headline": "Practical finishes with a complete, coordinated interior setup.",
-        "signature": "Advance Decorative Laminates",
+        "rate": "₹2,000",
+        "headline": "Complete fixed furniture, built exactly as per your approved 3D design.",
+        "signature": "Complete Fixed Furniture",
         "image": "silver-living-panelled",
         "images": ["silver-living-minimal", "silver-living-panelled", "silver-living-chandelier"],
         "scope": [
-            "Door re-facing with 1.0 mm Advance Decorative Laminates",
-            "Century MR ply with Sainik 710 kitchen base",
-            "Five InnoTech drawers and rolling shutter",
+            "Complete fixed furniture, exactly as per the approved 3D design",
+            "Wardrobes, beds, media consoles, study and dressing units",
+            "Modular kitchen on Sainik 710 BWP with Century MR overheads",
+            "Hettich soft-close hardware and five InnoTech drawers",
             "Complete wiring, LED spotlights and cove lighting",
-            "Gypsum false ceiling",
-            "Asian Paints Tractor / Premium Emulsion",
+            "Gypsum false ceiling and Asian Paints emulsion",
         ],
     },
     {
         "slug": "gold",
         "name": "Gold",
         "kicker": "Premium living & soft décor",
-        "rate": "₹2,650",
-        "headline": "A richer home with upgraded finishes and soft décor.",
-        "signature": "Architectural Moulding + Satin/Enamel",
+        "rate": "₹2,600 – ₹2,800",
+        "headline": "Complete fixed furniture plus full decorative and door treatments, exactly as per your approved 3D design.",
+        "signature": "Fixed Furniture + Decorative & Door Treatments",
         "image": "gold-bedroom-rosegold",
         "images": ["gold-bedroom-rosegold", "gold-bedroom-blue", "gold-bedroom-tufted"],
         "scope": [
-            "Everything in Silver, plus POP fall ceiling",
-            "Architectural wooden moulding and matching architraves",
+            "Everything in Silver, plus full decorative treatment",
+            "Complete door treatments — cladding, moulding and architraves",
             "Premium satin / PU-enamel painted doors",
+            "Architectural wall panelling and feature treatments",
             "High-gloss acrylic kitchen shutter option",
             "Natural wood veneer on accent units",
+            "POP fall ceiling with layered profile lighting",
             "Sheer and blackout curtains with premium upholstery",
         ],
     },
@@ -107,14 +126,16 @@ PACKAGES = [
         "slug": "platinum",
         "name": "Platinum",
         "kicker": "Ultra-luxury & architectural overhaul",
-        "rate": "₹3,450",
-        "headline": "Bespoke detailing, architectural finishes and smart living.",
-        "signature": "CNC / Fluted Panels + Italian PU",
+        "rate": "₹4,000",
+        "headline": "Everything shown in your luxury 3D design — fixed furniture, grand feature walls and premium lounge furniture.",
+        "signature": "The Full Luxury 3D, Delivered",
         "image": "plat-living-classical",
         "images": ["plat-living-classical", "plat-bedroom-gold", "plat-corridor-marble"],
         "scope": [
-            "Everything in Gold, plus",
-            "Precision CNC routed designs and fluted panelling",
+            "Every single element shown in your luxury 3D design",
+            "All fixed furniture, fully detailed",
+            "Grand feature walls — CNC routed, fluted and panelled",
+            "Premium loose and lounge furniture included",
             "Full-height door cladding with Italian PU finish",
             "Full PU finish on selected furniture",
             "Complete transformation of bathrooms",
@@ -130,6 +151,23 @@ PACKAGES = [
              "Handcrafted metal and wooden art pieces with premium architectural detailing."),
         ],
     },
+]
+
+PROMISE = {
+    "title": "What you see in the 3D is exactly what you get",
+    "body": "Across all three packages we never compromise on the core strength of your home. "
+            "Every project is delivered with 100% A-grade material, best-in-class quality and skilled labour work.",
+    "quote": "No matter which package fits your budget, the quality stays non-negotiable. You always get the "
+             "best materials and the best labour work from Feel The Space. The price changes only with how much "
+             "work and how many design elements you choose from your 3D view.",
+    "attrib": "Designer's note",
+}
+
+TRUST_BADGES = [
+    ("10-Year", "Material warranty"),
+    ("45–60 Days", "On-time delivery guarantee"),
+    ("Zero", "Hidden costs"),
+    ("100%", "In-house carpentry & execution"),
 ]
 
 MATERIALS = [
@@ -269,6 +307,17 @@ TESTIMONIALS = [
      "They worked floor by floor so we could keep the rest of the property running. The lobby ceiling and chandelier detailing came out better than the reference images we gave them."),
     ("Suresh R.", "Crossings Republik",
      "Straightforward people. When I asked for a change mid-project they quoted it before doing it, so the final bill matched what I had agreed to."),
+]
+
+# Video testimonials. Set "video" to a filename in assets/video/ (no extension)
+# and "poster" to an image in assets/img/ once the clips are ready.
+VIDEO_TESTIMONIALS = [
+    {"name": "Client name", "where": "Gaur Saundaryam, Greater Noida West",
+     "line": "30-second clip — handover day walkthrough.", "video": None, "poster": "res-living-dining-wide"},
+    {"name": "Client name", "where": "Ajnara Ambrosia, Noida",
+     "line": "30-second clip — kitchen and wardrobes.", "video": None, "poster": "res-kitchen-island"},
+    {"name": "Client name", "where": "Unninav Utopia, Ghaziabad",
+     "line": "30-second clip — living and dining.", "video": None, "poster": "res-living-panelled"},
 ]
 
 POSTS = [

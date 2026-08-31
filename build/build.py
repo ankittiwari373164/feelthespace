@@ -37,11 +37,13 @@ SVG = {
  "pin": '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M8 14.5s5-4.4 5-8a5 5 0 0 0-10 0c0 3.6 5 8 5 8Z"/><circle cx="8" cy="6.4" r="1.9"/></svg>',
  "left": '<svg width="16" height="12" viewBox="0 0 16 12" fill="none" aria-hidden="true"><path d="M15 6H2M6.5 1.5 2 6l4.5 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
  "right": '<svg width="16" height="12" viewBox="0 0 16 12" fill="none" aria-hidden="true"><path d="M1 6h13M9.5 1.5 14 6l-4.5 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+ "star": '<svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="m8 .9 2.2 4.5 5 .7-3.6 3.5.9 4.9L8 12.2l-4.5 2.3.9-4.9L.8 6.1l5-.7Z"/></svg>',
  "play": '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg>',
 }
 SOCIAL_SVG = {
  "Instagram": '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="1.8" y="1.8" width="12.4" height="12.4" rx="3.6"/><circle cx="8" cy="8" r="3"/><circle cx="11.8" cy="4.2" r=".8" fill="currentColor" stroke="none"/></svg>',
  "Facebook": '<svg viewBox="0 0 16 16" fill="currentColor"><path d="M9.5 16V9h2.3l.4-2.7H9.5V4.6c0-.8.2-1.3 1.3-1.3h1.4V.9C11.9.9 11 .8 10.1.8 8 .8 6.6 2.1 6.6 4.4v1.9H4.3V9h2.3v7h2.9Z"/></svg>',
+ "YouTube": '<svg viewBox="0 0 16 16" fill="currentColor"><path d="M15.5 4.8a2 2 0 0 0-1.4-1.4C12.9 3 8 3 8 3s-4.9 0-6.1.4A2 2 0 0 0 .5 4.8 21 21 0 0 0 .2 8a21 21 0 0 0 .3 3.2 2 2 0 0 0 1.4 1.4C3.1 13 8 13 8 13s4.9 0 6.1-.4a2 2 0 0 0 1.4-1.4A21 21 0 0 0 15.8 8a21 21 0 0 0-.3-3.2ZM6.5 10.3V5.7L10.4 8Z"/></svg>',
  "WhatsApp": '<svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 0 0-6.9 12L0 16l4.1-1.1A8 8 0 1 0 8 0Zm4.3 11.2c-.2.5-1 1-1.5 1-.4 0-.9.2-3-.9-2.5-1.2-4-3.8-4.2-4-.1-.2-1-1.3-1-2.5s.6-1.7.8-2c.2-.2.5-.3.6-.3h.5c.2 0 .4 0 .5.4l.7 1.7c.1.2 0 .4-.1.5l-.3.4c-.1.1-.2.3 0 .5.2.4.8 1.2 1.6 1.9 1 .9 1.8 1.1 2 1.2.2.1.4 0 .5-.1l.6-.7c.2-.2.3-.2.5-.1l1.6.8c.2.1.4.2.4.3.1.2.1.6 0 1Z"/></svg>',
 }
 
@@ -175,7 +177,7 @@ def drawer():
   </ul></nav>
   <div class="drawer__foot">
     <a class="btn btn--primary" href="{tel()}">{SVG['phone']} Call the studio</a>
-    <a class="btn btn--ghost" href="{wa()}" target="_blank" rel="noopener">{SVG['wa']} WhatsApp</a>
+    <a class="btn btn--ghost" href="{wa()}" target="_blank" rel="noopener">{SVG['wa']} Chat with our designer</a>
   </div>
   </div>
 </aside>"""
@@ -184,17 +186,36 @@ def drawer():
 def rail():
     return f"""
 <div class="rail">
-  <a class="rail__item rail__item--wa" href="{wa()}" target="_blank" rel="noopener"><span>WhatsApp</span>{SVG['wa']}</a>
+  <a class="rail__item rail__item--wa" href="{wa()}" target="_blank" rel="noopener"><span>Chat with our designer</span>{SVG['wa']}</a>
   <a class="rail__item" href="{tel()}"><span>{BRAND['phone']}</span>{SVG['phone']}</a>
   <a class="rail__item" href="mailto:{BRAND['email']}"><span>Email</span>{SVG['mail']}</a>
   <button class="rail__item rail__item--cta" type="button" data-modal="rail" data-modal-title="Get a free estimate"><span>Free estimate</span>{SVG['calc']}</button>
 </div>"""
 
 
-def form(idp, submit="Send enquiry"):
+def form(idp, submit="Send enquiry", compact=False):
     areas = "".join(f'<option value="{n}">{n}</option>' for _, n, _ in SERVICE_AREAS)
     verts = "".join(f'<option value="{v["name"]}">{v["name"]}</option>' for v in VERTICALS)
     pkgs = "".join(f'<option value="{p["name"]}">{p["name"]} — {p["rate"]}/sq. ft.</option>' for p in PACKAGES)
+    if compact:
+        # calculator gate: name + WhatsApp only, everything else already captured by the steps
+        return f"""
+<div data-form-wrap>
+  <form class="form" data-enquiry novalidate>
+    <input type="hidden" name="source" value="{idp}">
+    <div class="hp"><label>Company website<input type="text" name="company_website" tabindex="-1" autocomplete="off"></label></div>
+    <div class="form__row">
+      <div class="field"><label for="{idp}-name">Name</label><input id="{idp}-name" name="name" type="text" autocomplete="name" required><span class="err"></span></div>
+      <div class="field"><label for="{idp}-phone">WhatsApp number</label><input id="{idp}-phone" name="phone" type="tel" inputmode="numeric" autocomplete="tel" required><span class="err"></span></div>
+    </div>
+    <button class="btn btn--primary" type="submit">{submit}</button>
+    <p class="form__note">Opens WhatsApp with your estimate attached. No spam.</p>
+  </form>
+  <div class="form__status" role="status">
+    <h4>Sent to WhatsApp.</h4>
+    <p>Press send in WhatsApp and we will come back with a detailed breakdown.</p>
+  </div>
+</div>"""
     return f"""
 <div data-form-wrap>
   <form class="form" data-enquiry novalidate>
@@ -244,7 +265,7 @@ def cta(title, sub, source, label="Book a consultation"):
   <p style="margin-top:14px">{sub}</p>
   <p class="cta__row">
     <button class="btn btn--gold" type="button" data-modal="{source}" data-modal-title="{label}">{label}</button>
-    <a class="btn btn--outline" href="{wa()}" target="_blank" rel="noopener">{SVG['wa']} WhatsApp us</a>
+    <a class="btn btn--outline" href="{wa()}" target="_blank" rel="noopener">{SVG['wa']} Chat with our designer</a>
   </p>
 </div></section>"""
 
@@ -263,7 +284,9 @@ def consult():
     </ul>
   </div>
   <div>{form("consult", "Book my consultation")}</div>
-</div></section>"""
+</div>
+<div class="container">{badges_block()}</div>
+</section>"""
 
 
 def footer():
@@ -275,6 +298,7 @@ def footer():
     a = "".join(f'<li><a href="{rel()}areas/{s}.html">{n}</a></li>' for s, n, _ in SERVICE_AREAS)
     soc = (f'<a href="{BRAND["instagram"]}" target="_blank" rel="noopener" aria-label="Instagram">{SOCIAL_SVG["Instagram"]}</a>'
            f'<a href="{BRAND["facebook"]}" target="_blank" rel="noopener" aria-label="Facebook">{SOCIAL_SVG["Facebook"]}</a>'
+           f'<a href="{BRAND["youtube"]}" target="_blank" rel="noopener" aria-label="YouTube">{SOCIAL_SVG["YouTube"]}</a>'
            f'<a href="{wa()}" target="_blank" rel="noopener" aria-label="WhatsApp">{SOCIAL_SVG["WhatsApp"]}</a>')
     return f"""
 <footer class="footer"><div class="container">
@@ -288,6 +312,9 @@ def footer():
         <li>{SVG['pin']}<span>{BRAND['address_l1']}<br>{BRAND['address_l2']}</span></li>
       </ul>
       <div class="social">{soc}</div>
+      <a class="reviewlink" href="{BRAND['review']}" target="_blank" rel="noopener">
+        <span class="reviewlink__stars" aria-hidden="true">{SVG['star']}{SVG['star']}{SVG['star']}{SVG['star']}{SVG['star']}</span>
+        <span>Review us on Google</span></a>
     </div>
     <div><h4>Work</h4><ul class="footer__list">{w}</ul></div>
     <div><h4>Studio</h4><ul class="footer__list">{q}</ul></div>
@@ -298,9 +325,158 @@ def footer():
     <p>{BRAND['site']}</p>
   </div>
 </div></footer>
-{drawer()}{rail()}{modal()}
+{drawer()}{rail()}{sticky_bar()}{modal()}
 <script src="{rel()}assets/js/main.js" defer></script>
 </body></html>"""
+
+
+def promise_block():
+    return f"""
+<section class="section section--ink"><div class="container promise">
+  <div class="promise__main reveal">
+    <span class="eyebrow">Our absolute promise</span>
+    <h2 class="section-title">{PROMISE['title']}</h2><div class="rule"></div>
+    <p style="margin-top:22px">{PROMISE['body']}</p>
+    <ul class="promise__pills">
+      <li>100% A-grade material</li><li>Best quality</li><li>Best labour work</li>
+    </ul>
+  </div>
+  <figure class="promise__quote reveal" data-d="1">
+    <blockquote>{PROMISE['quote']}</blockquote>
+    <figcaption>{PROMISE['attrib']}</figcaption>
+  </figure>
+</div></section>"""
+
+
+def badges_block():
+    items = "".join(
+        f'<div class="badge reveal" data-d="{i}"><strong>{a}</strong><span>{b}</span></div>'
+        for i, (a, b) in enumerate(TRUST_BADGES))
+    return f'<div class="badges">{items}</div>'
+
+
+def societies_block():
+    cols = "".join(
+        f'<div class="soc reveal" data-d="{i}"><h3>{city}</h3><ul>'
+        + "".join(f"<li>{n}</li>" for n in names) + "</ul></div>"
+        for i, (city, names) in enumerate(SOCIETIES))
+    return f"""
+<section class="section section--paper"><div class="container">
+  <div class="section-head section-head--center">
+    <span class="eyebrow">Delivered in Delhi NCR</span>
+    <h2 class="section-title">Societies we have already worked in</h2><div class="rule"></div>
+    <p style="margin-top:18px">If you live in one of these, we have almost certainly done a flat in your layout — ask us to show you.</p>
+  </div>
+  <div class="socs">{cols}</div>
+</div></section>"""
+
+
+def beforeafter_block():
+    return f"""
+<section class="section"><div class="container container--narrow">
+  <div class="section-head section-head--center">
+    <span class="eyebrow">Before &amp; after</span>
+    <h2 class="section-title">Drag to see the transformation</h2><div class="rule"></div>
+  </div>
+  <div class="ba" data-ba>
+    <div class="ba__img ba__img--after">{img('plat-living-classical', '')}<span class="ba__tag">After</span></div>
+    <div class="ba__img ba__img--before">{img('res-lobby-slat', '')}<span class="ba__tag">Before</span></div>
+    <div class="ba__handle" role="slider" tabindex="0" aria-label="Reveal before or after"
+         aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"><span></span></div>
+  </div>
+  <p class="fineprint">Bare-shell handover on the left, finished interior on the right.</p>
+</div></section>"""
+
+
+def calculator_block():
+    types = "".join(f'<button type="button" class="calc__opt" data-val="{n}" data-sqft="{a}">{n}<em>~{a} sq. ft.</em></button>'
+                    for n, a in CALC_TYPES)
+    styles = "".join(f'<button type="button" class="calc__opt" data-val="{n}">{n}</button>' for n in CALC_STYLES)
+    pkgs = "".join(
+        f'<button type="button" class="calc__opt" data-val="{p["name"]}" data-rate="{p["slug"]}">'
+        f'{p["name"]}<em>{p["rate"]} / sq. ft.</em></button>' for p in PACKAGES)
+    return f"""
+<section class="section section--paper" id="calculator"><div class="container container--narrow">
+  <div class="section-head section-head--center">
+    <span class="eyebrow">Interior cost calculator</span>
+    <h2 class="section-title">Get an indicative budget in three steps</h2><div class="rule"></div>
+  </div>
+  <div class="calc" data-calc>
+    <ol class="calc__bar"><li class="is-on">Property</li><li>Style</li><li>Package</li><li>Result</li></ol>
+
+    <div class="calc__step is-on" data-step="1">
+      <h3>1 &middot; What are you doing up?</h3>
+      <div class="calc__opts">{types}</div>
+      <div class="field calc__area"><label for="calc-sqft">Or enter your carpet area (sq. ft.)</label>
+        <input id="calc-sqft" type="text" inputmode="numeric" placeholder="e.g. 1275"></div>
+    </div>
+
+    <div class="calc__step" data-step="2">
+      <h3>2 &middot; Which direction appeals?</h3>
+      <div class="calc__opts">{styles}</div>
+    </div>
+
+    <div class="calc__step" data-step="3">
+      <h3>3 &middot; Which package?</h3>
+      <div class="calc__opts">{pkgs}</div>
+    </div>
+
+    <div class="calc__step" data-step="4">
+      <h3>Your indicative range</h3>
+      <div class="calc__result" data-calc-result>
+        <span class="calc__figure">&mdash;</span>
+        <span class="calc__meta"></span>
+      </div>
+      <p class="calc__note">Indicative only. The exact figure is locked after 3D approval through a signed BOQ. Execution is exclusive of 18% GST; the {DESIGN_FEE['rate']}/sq. ft. design fee is billed separately.</p>
+      <div class="calc__gate">
+        <p>Send this estimate to yourself and we will follow up with a detailed breakdown.</p>
+        {form("calculator", "Send me this estimate", compact=True)}
+      </div>
+    </div>
+
+    <div class="calc__nav">
+      <button type="button" class="btn btn--ghost" data-calc-back>Back</button>
+      <button type="button" class="btn btn--primary" data-calc-next>Continue</button>
+    </div>
+  </div>
+</div></section>"""
+
+
+def sticky_bar():
+    return f"""
+<div class="stickybar">
+  <a class="stickybar__btn" href="{tel()}">{SVG['phone']}<span>Call studio</span></a>
+  <a class="stickybar__btn stickybar__btn--wa" href="{wa()}" target="_blank" rel="noopener">{SVG['wa']}<span>Free estimate</span></a>
+</div>"""
+
+
+def video_testimonials_block():
+    cards = ""
+    for i, v in enumerate(VIDEO_TESTIMONIALS):
+        if v["video"]:
+            media = (f'<video src="{rel()}assets/video/{v["video"]}.mp4" '
+                     f'poster="{rel()}assets/img/{v["poster"]}.jpg" '
+                     f'controls playsinline preload="none"></video>')
+        else:
+            media = (f'{img(v["poster"], "")}'
+                     f'<span class="vt__play" aria-hidden="true">{SVG["play"]}</span>'
+                     f'<span class="vt__soon">Video coming soon</span>')
+        cards += f"""<figure class="vt reveal" data-d="{i}">
+      <div class="vt__media">{media}</div>
+      <figcaption><strong>{v['name']}</strong><span>{v['where']}</span><em>{v['line']}</em></figcaption>
+    </figure>"""
+    return f"""
+<section class="section"><div class="container">
+  <div class="section-head section-head--center">
+    <span class="eyebrow">In their own words</span>
+    <h2 class="section-title">Video testimonials</h2><div class="rule"></div>
+    <p style="margin-top:18px">Short clips filmed at handover. More going up as we collect them.</p>
+  </div>
+  <div class="vts">{cards}</div>
+  <p class="cta__row" style="justify-content:center">
+    <a class="btn btn--ghost" href="{BRAND['review']}" target="_blank" rel="noopener">{SVG['star']} Read our Google reviews</a>
+  </p>
+</div></section>"""
 
 
 def banner(title, crumb, image, lede=""):
@@ -566,7 +742,9 @@ def build_home():
   <div class="servs">{servs}</div>
 </div></section>
 {core_scope_block()}
+{promise_block()}
 {materials_block()}
+{beforeafter_block()}
 <section class="section"><div class="container split">
   <div class="split__media reveal">{video("res-walkthrough")}</div>
   <div class="reveal" data-d="1">
@@ -577,6 +755,8 @@ def build_home():
     <p class="cta__row"><a class="btn btn--ghost" href="{rel()}gallery.html">Browse the gallery</a></p>
   </div>
 </div></section>
+{societies_block()}
+{video_testimonials_block()}
 {testimonials_block()}
 {steps_block(NEXT_STEPS, "Next steps", "From proposal approval to your finished space.", "A well-planned space starts with one clear decision.")}
 {journal_block()}
@@ -629,6 +809,7 @@ def build_packages():
 {design_fee_block()}
 {packages_block(heading=True)}
 <section class="section section--paper"><div class="container">{panels}</div></section>
+{promise_block()}
 {core_scope_block()}
 {materials_block()}
 {steps_block(BOQ_STEPS, "BOQ &amp; commercial clarity", "Final numbers are locked after design approval.",
@@ -938,8 +1119,13 @@ def build_faq_contact_sitemap():
     </p>
   </div>
   <div>{form("contact", "Send enquiry")}</div>
-</div></section>
-<section class="section section--paper"><div class="container">
+</div>
+<div class="container">{badges_block()}</div>
+</section>
+{calculator_block()}
+{video_testimonials_block()}
+{societies_block()}
+<section class="section"><div class="container">
   <div class="section-head section-head--center"><span class="eyebrow">Visit</span>
   <h2 class="section-title">The studio</h2><div class="rule"></div></div>
   <div class="mapwrap">

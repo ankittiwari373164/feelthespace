@@ -38,7 +38,7 @@
   --shadow:0 1px 2px rgba(19,34,29,.06),0 8px 28px rgba(19,34,29,.07);
   --shadow-lg:0 18px 50px rgba(19,34,29,.16);
   --ease:cubic-bezier(.4,0,.2,1);
-  --header-h:72px;
+  --header-h:92px;
 }
 
 /* ---------- 2. Base ---------- */
@@ -121,17 +121,17 @@ ul{margin:0;padding:0}
 
 /* ---------- 4. Logo ---------- */
 .logo{display:block;flex:none;line-height:0}
-.logo img{height:46px;width:auto;transition:height .3s var(--ease)}
-.header.is-stuck .logo img{height:38px}
-.drawer__head .logo img{height:40px}
-.footer .logo img{height:52px}
-@media (max-width:640px){.logo img{height:38px}.footer .logo img{height:46px}}
+.logo img{height:64px;width:auto;transition:height .3s var(--ease)}
+.header.is-stuck .logo img{height:50px}
+.drawer__head .logo img{height:50px}
+.footer .logo img{height:74px}
+@media (max-width:640px){.logo img{height:48px}.footer .logo img{height:60px}}
 
 /* ---------- 5. Header ---------- */
 .header{position:sticky;top:0;z-index:50;background:var(--paper);border-bottom:1px solid var(--line);transition:box-shadow .3s var(--ease)}
 .header.is-stuck{box-shadow:0 2px 20px rgba(18,35,63,.1)}
 .header__inner{display:flex;align-items:center;gap:28px;height:var(--header-h);transition:height .3s var(--ease)}
-.header.is-stuck .header__inner{height:62px}
+.header.is-stuck .header__inner{height:70px}
 .nav{margin-left:auto;display:flex;align-items:center;gap:2px;list-style:none}
 .nav>li{position:relative}
 .nav a,.nav .nav__trigger{display:flex;align-items:center;gap:6px;padding:10px 12px;font-size:var(--fs-sm);font-weight:600;color:var(--navy);white-space:nowrap;transition:color .2s var(--ease)}
@@ -603,3 +603,140 @@ ul{margin:0;padding:0}
   .marquee__track{animation:none}
   .process-sec .steps::after{transform:scaleX(1)}
 }
+
+/* ---------- 28. Promise ---------- */
+.promise{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,5vw,64px);align-items:center}
+.promise__pills{list-style:none;display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
+.promise__pills li{border:1px solid var(--line-dk);border-radius:100px;padding:8px 18px;font-size:var(--fs-xs);letter-spacing:.12em;text-transform:uppercase;color:var(--gold-lt)}
+.promise__quote{margin:0;background:var(--navy-2);border-left:2px solid var(--gold);border-radius:var(--radius);padding:clamp(26px,3.5vw,40px)}
+.promise__quote blockquote{margin:0;font-family:var(--ff-display);font-size:clamp(1.15rem,2vw,1.5rem);line-height:1.5;color:#fff}
+.promise__quote figcaption{margin-top:18px;font-size:var(--fs-xs);letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+
+/* ---------- 29. Trust badges ---------- */
+.badges{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;margin-top:48px}
+.badge{background:var(--paper);padding:26px 18px;text-align:center}
+.badge strong{display:block;font-family:var(--ff-display);font-size:1.6rem;font-weight:400;color:var(--gold)}
+.badge span{display:block;font-size:var(--fs-xs);letter-spacing:.14em;text-transform:uppercase;color:var(--navy);margin-top:6px;line-height:1.5}
+
+/* ---------- 30. Societies ---------- */
+.socs{display:grid;grid-template-columns:repeat(5,1fr);gap:26px}
+.soc h3{color:var(--gold);font-size:var(--fs-xs);letter-spacing:.18em;text-transform:uppercase;padding-bottom:10px;border-bottom:1px solid var(--line);margin-bottom:14px}
+.soc ul{list-style:none}
+.soc li{font-size:var(--fs-sm);margin-bottom:9px;padding-left:16px;position:relative}
+.soc li::before{content:"";position:absolute;left:0;top:11px;width:5px;height:5px;border-radius:50%;background:var(--gold-lt)}
+
+/* ---------- 31. Before / after slider ---------- */
+.ba{position:relative;overflow:hidden;border-radius:var(--radius);aspect-ratio:16/10;user-select:none;touch-action:pan-y;cursor:ew-resize}
+.ba__img{position:absolute;inset:0}
+.ba__img .ph{width:100%;height:100%;border-radius:0}
+.ba__img--before{width:50%;border-right:2px solid var(--gold)}
+.ba__img--before .ph>img{width:100vw;max-width:none;height:100%}
+.ba__tag{position:absolute;bottom:14px;left:14px;background:rgba(19,34,29,.72);color:#fff;font-size:var(--fs-xs);letter-spacing:.14em;text-transform:uppercase;padding:6px 13px;border-radius:2px;backdrop-filter:blur(4px)}
+.ba__img--after .ba__tag{left:auto;right:14px}
+.ba__handle{position:absolute;top:0;bottom:0;left:50%;width:46px;transform:translateX(-50%);display:grid;place-items:center;cursor:ew-resize}
+.ba__handle span{width:44px;height:44px;border-radius:50%;background:var(--gold);box-shadow:0 4px 18px rgba(0,0,0,.3);position:relative}
+.ba__handle span::before,.ba__handle span::after{content:"";position:absolute;top:50%;width:0;height:0;border-block:5px solid transparent;margin-top:-5px}
+.ba__handle span::before{left:11px;border-right:7px solid #fff}
+.ba__handle span::after{right:11px;border-left:7px solid #fff}
+.ba__handle:focus-visible span{outline:3px solid #fff;outline-offset:3px}
+
+/* ---------- 32. Cost calculator ---------- */
+.calc{background:var(--bone);border:1px solid var(--line);border-radius:var(--radius);padding:clamp(24px,3.5vw,42px)}
+.calc__bar{list-style:none;display:flex;gap:6px;margin-bottom:30px;counter-reset:c}
+.calc__bar li{flex:1;font-size:var(--fs-xs);letter-spacing:.1em;text-transform:uppercase;color:var(--body);padding-top:12px;border-top:2px solid var(--line);transition:color .3s var(--ease),border-color .3s var(--ease)}
+.calc__bar li.is-on{color:var(--gold);border-color:var(--gold)}
+.calc__step{display:none}
+.calc__step.is-on{display:block;animation:imgIn .35s var(--ease) both}
+.calc__step h3{color:var(--navy);margin-bottom:20px;font-size:1.05rem}
+.calc__opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(158px,1fr));gap:12px}
+.calc__opt{border:1px solid var(--line);background:var(--paper);border-radius:var(--radius);padding:18px 16px;text-align:left;font-size:var(--fs-sm);font-weight:600;color:var(--navy);transition:border-color .2s var(--ease),background .2s var(--ease)}
+.calc__opt em{display:block;font-style:normal;font-weight:400;font-size:var(--fs-xs);color:var(--body);margin-top:5px}
+.calc__opt:hover{border-color:var(--gold-lt)}
+.calc__opt.is-sel{border-color:var(--gold);background:#fff;box-shadow:0 0 0 2px rgba(176,132,52,.18)}
+.calc__area{margin-top:18px;max-width:280px}
+.calc__result{background:var(--navy);border-radius:var(--radius);padding:32px;text-align:center}
+.calc__figure{display:block;font-family:var(--ff-display);font-size:clamp(2rem,5vw,3rem);color:var(--gold-lt);line-height:1.1}
+.calc__meta{display:block;font-size:var(--fs-xs);letter-spacing:.14em;text-transform:uppercase;color:#9FB0A8;margin-top:12px}
+.calc__note{font-size:var(--fs-xs);margin-top:16px}
+.calc__gate{margin-top:26px;padding-top:26px;border-top:1px solid var(--line)}
+.calc__gate>p{font-size:var(--fs-sm);color:var(--navy);font-weight:600}
+
+.calc__nav{display:flex;gap:12px;margin-top:28px}
+.calc__nav .btn{flex:1}
+.calc__nav [data-calc-back]{display:none}
+.calc.is-past-first [data-calc-back]{display:inline-flex}
+.calc.is-last .calc__nav{display:none}
+
+/* ---------- 33. Sticky mobile bar ---------- */
+.stickybar{display:none}
+@media (max-width:900px){
+  .stickybar{
+    display:grid;grid-template-columns:auto 1fr;gap:1px;
+    position:fixed;left:0;right:0;bottom:0;z-index:46;
+    background:var(--line);box-shadow:0 -4px 20px rgba(19,34,29,.18);
+    padding-bottom:env(safe-area-inset-bottom);
+  }
+  .stickybar__btn{display:flex;align-items:center;justify-content:center;gap:9px;background:var(--navy);color:#fff;padding:15px 18px;font-size:var(--fs-xs);font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+  .stickybar__btn svg{width:16px;height:16px;flex:none}
+  .stickybar__btn--wa{background:#1FA855}
+  body{padding-bottom:56px}
+  /* the sticky bar already covers call + WhatsApp — don't double up */
+  .rail{display:none}
+}
+
+/* ---------- 34. Project hover bubble ---------- */
+.tile,.serv,.post{position:relative}
+@media (hover:hover){
+  .bubble{
+    position:fixed;z-index:44;pointer-events:none;top:0;left:0;
+    width:92px;height:92px;border-radius:50%;background:var(--gold);color:#fff;
+    display:grid;place-items:center;text-align:center;
+    font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+    transform:translate(-50%,-50%) scale(0);transition:transform .28s var(--ease);
+  }
+  .bubble.is-on{transform:translate(-50%,-50%) scale(1)}
+}
+
+/* ---------- 35. Responsive for new blocks ---------- */
+@media (max-width:1100px){.socs{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:900px){
+  .promise{grid-template-columns:1fr}
+  .badges{grid-template-columns:repeat(2,1fr)}
+  .socs{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:640px){
+  .badges{grid-template-columns:1fr}
+  .socs{grid-template-columns:1fr}
+  .calc__bar li{font-size:9px;letter-spacing:.04em}
+  .calc__opts{grid-template-columns:1fr}
+  .ba{aspect-ratio:4/3}
+}
+
+/* ---------- 36. Video testimonials ---------- */
+.vts{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.vt{margin:0;background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+.vt__media{position:relative;aspect-ratio:9/13;overflow:hidden;background:var(--navy)}
+.vt__media .ph,.vt__media video{width:100%;height:100%;border-radius:0;object-fit:cover}
+.vt__media .ph>img{filter:saturate(.55) brightness(.62)}
+.vt__play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:62px;height:62px;border-radius:50%;background:rgba(255,255,255,.9);color:var(--navy);
+  display:grid;place-items:center}
+.vt__play svg{width:26px;height:26px;margin-left:3px}
+.vt__soon{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);white-space:nowrap;
+  background:rgba(19,34,29,.72);color:#fff;font-size:var(--fs-xs);letter-spacing:.14em;
+  text-transform:uppercase;padding:6px 14px;border-radius:100px;backdrop-filter:blur(4px)}
+.vt figcaption{padding:20px 22px}
+.vt figcaption strong{display:block;font-family:var(--ff-display);font-size:1.15rem;font-weight:400;color:var(--navy)}
+.vt figcaption span{display:block;font-size:var(--fs-xs);letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-top:3px}
+.vt figcaption em{display:block;font-style:normal;font-size:var(--fs-sm);margin-top:9px}
+
+/* ---------- 37. Footer review link ---------- */
+.reviewlink{display:inline-flex;align-items:center;gap:10px;margin-top:20px;padding:11px 18px;
+  border:1px solid var(--line-dk);border-radius:100px;font-size:var(--fs-sm);
+  transition:border-color .25s var(--ease),background .25s var(--ease)}
+.reviewlink:hover{border-color:var(--gold);background:rgba(176,132,52,.12)}
+.reviewlink__stars{display:inline-flex;gap:2px;color:var(--gold-lt)}
+.reviewlink__stars svg{width:13px;height:13px}
+
+@media (max-width:900px){.vts{grid-template-columns:1fr 1fr}}
+@media (max-width:640px){.vts{grid-template-columns:1fr}.vt__media{aspect-ratio:4/3}}

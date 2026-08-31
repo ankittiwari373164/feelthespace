@@ -8,6 +8,7 @@
   const $  = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const WA_BASE = 'https://wa.me/917428968717';
 
   /* ---------- 1. Sticky header ---------- */
   (function stickyHeader() {
@@ -341,30 +342,57 @@
         });
       });
 
-      form.addEventListener('submit', async (e) => {
+      form.addEventListener('submit', (e) => {
         e.preventDefault();
         if ($('[name="company_website"]', form).value) return; // honeypot
         const inputs = $$('input,select', form).filter((i) => rules[i.name]);
         const ok = inputs.map(validateField).every(Boolean);
-        if (!ok) { const bad = $('.field.is-invalid input,.field.is-invalid select', form); bad && bad.focus(); return; }
+        if (!ok) {
+          const bad = $('.field.is-invalid input,.field.is-invalid select', form);
+          bad && bad.focus();
+          return;
+        }
 
         const btn = $('button[type="submit"]', form);
         btn.classList.add('is-loading');
-        const original = btn.textContent;
-        btn.textContent = 'Sending';
 
-        try {
-          // Replace with your real endpoint:
-          // await fetch('/api/enquiry', { method:'POST', body:new FormData(form) });
-          await new Promise((r) => setTimeout(r, 900));
-          wrap.classList.add('is-sent');
-          form.reset();
-        } catch (err) {
-          alert('That did not send. Please call us instead, or try again in a moment.');
-        } finally {
-          btn.classList.remove('is-loading');
-          btn.textContent = original;
+        // Build a readable WhatsApp message from whatever the form collected
+        const val = (n) => {
+          const el = $(`[name="${n}"]`, form);
+          return el && el.value ? el.value.trim() : '';
+        };
+        const lines = ['*New enquiry from the website*', ''];
+        const push = (label, v) => { if (v) lines.push(`${label}: ${v}`); };
+        push('Name', val('name'));
+        push('Mobile', val('phone'));
+        push('Email', val('email'));
+        push('Location', val('city'));
+        push('Project type', val('projecttype'));
+        push('Carpet area', val('sqft') ? val('sqft') + ' sq. ft.' : '');
+        push('Package', val('package'));
+        push('Notes', val('message'));
+
+        const src = val('source');
+        if (src && src.startsWith('calculator:')) {
+          const fig = document.querySelector('[data-calc-result] .calc__figure');
+          const meta = document.querySelector('[data-calc-result] .calc__meta');
+          lines.push('');
+          lines.push('*Calculator estimate*');
+          if (fig && fig.textContent.trim() !== '—') push('Indicative range', fig.textContent.trim());
+          if (meta && meta.textContent.trim()) push('Based on', meta.textContent.trim());
+        } else if (src) {
+          push('Enquiry from', src);
         }
+
+        const url = WA_BASE + '?text=' + encodeURIComponent(lines.join('\n'));
+
+        // Open WhatsApp. Popup blockers can bite, so fall back to same-tab navigation.
+        const win = window.open(url, '_blank');
+        if (!win) window.location.href = url;
+
+        wrap.classList.add('is-sent');
+        form.reset();
+        btn.classList.remove('is-loading');
       });
     });
   })();
@@ -448,6 +476,171 @@
         if (e.key === 'ArrowRight') btns[(i + 1) % btns.length].focus();
         if (e.key === 'ArrowLeft') btns[(i - 1 + btns.length) % btns.length].focus();
       });
+    });
+  })();
+
+
+  /* ---------- 16. Before / after slider ---------- */
+  (function beforeAfter() {
+    $$('[data-ba]').forEach((root) => {
+      const before = $('.ba__img--before', root);
+      const handle = $('.ba__handle', root);
+      if (!before || !handle) return;
+      let dragging = false;
+
+      const set = (pct) => {
+        const p = Math.max(0, Math.min(100, pct));
+        before.style.width = p + '%';
+        handle.style.left = p + '%';
+        handle.setAttribute('aria-valuenow', Math.round(p));
+      };
+      const fromEvent = (e) => {
+        const r = root.getBoundingClientRect();
+        const x = (e.touches ? e.touches[0].clientX : e.clientX) - r.left;
+        set((x / r.width) * 100);
+      };
+
+      root.addEventListener('pointerdown', (e) => {
+        dragging = true; root.setPointerCapture(e.pointerId); fromEvent(e);
+      });
+      root.addEventListener('pointermove', (e) => { if (dragging) fromEvent(e); });
+      root.addEventListener('pointerup', () => { dragging = false; });
+      root.addEventListener('pointercancel', () => { dragging = false; });
+
+      handle.addEventListener('keydown', (e) => {
+        const now = parseFloat(handle.getAttribute('aria-valuenow')) || 50;
+        if (e.key === 'ArrowLeft') { e.preventDefault(); set(now - 4); }
+        if (e.key === 'ArrowRight') { e.preventDefault(); set(now + 4); }
+        if (e.key === 'Home') { e.preventDefault(); set(0); }
+        if (e.key === 'End') { e.preventDefault(); set(100); }
+      });
+
+      set(50);
+    });
+  })();
+
+  /* ---------- 17. Cost calculator ---------- */
+  (function calculator() {
+    const root = $('[data-calc]');
+    if (!root) return;
+    const steps = $$('.calc__step', root);
+    const bar = $$('.calc__bar li', root);
+    const next = $('[data-calc-next]', root);
+    const back = $('[data-calc-back]', root);
+    const areaInput = $('#calc-sqft', root);
+    const resultEl = $('[data-calc-result] .calc__figure', root);
+    const metaEl = $('[data-calc-result] .calc__meta', root);
+    const sourceField = $('[name="source"]', root);
+
+    // low/high rate per package slug, in ₹/sq.ft.
+    const RATES = { silver: [2000, 2000], gold: [2600, 2800], platinum: [4000, 4000] };
+    const state = { type: null, sqft: null, style: null, pkg: null, slug: null };
+    let step = 1;
+
+    const show = (n) => {
+      step = Math.max(1, Math.min(steps.length, n));
+      steps.forEach((s, i) => s.classList.toggle('is-on', i === step - 1));
+      bar.forEach((b, i) => b.classList.toggle('is-on', i <= step - 1));
+      root.classList.toggle('is-past-first', step > 1);
+      root.classList.toggle('is-last', step === steps.length);
+      if (step === steps.length) compute();
+    };
+
+    const fmt = (n) => '₹' + Math.round(n).toLocaleString('en-IN');
+
+    const compute = () => {
+      if (!state.sqft || !state.slug) {
+        resultEl.textContent = '—';
+        metaEl.textContent = 'Choose a property type and package';
+        return;
+      }
+      const [lo, hi] = RATES[state.slug];
+      const low = state.sqft * lo, high = state.sqft * hi;
+      resultEl.textContent = low === high ? fmt(low) : fmt(low) + ' – ' + fmt(high);
+      metaEl.textContent =
+        `${state.pkg} · ${state.sqft.toLocaleString('en-IN')} sq. ft.` +
+        (state.style ? ' · ' + state.style : '') + ' · excl. GST';
+      if (sourceField) {
+        sourceField.value = `calculator:${state.slug}:${state.sqft}` +
+          (state.style ? ':' + state.style.replace(/\s+/g, '-').toLowerCase() : '');
+      }
+    };
+
+    $$('.calc__opt', root).forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const group = btn.parentElement;
+        $$('.calc__opt', group).forEach((b) => b.classList.remove('is-sel'));
+        btn.classList.add('is-sel');
+        const stepNo = parseInt(btn.closest('.calc__step').dataset.step, 10);
+        if (stepNo === 1) {
+          state.type = btn.dataset.val;
+          if (!areaInput.value) state.sqft = parseInt(btn.dataset.sqft, 10);
+        } else if (stepNo === 2) {
+          state.style = btn.dataset.val;
+        } else if (stepNo === 3) {
+          state.pkg = btn.dataset.val;
+          state.slug = btn.dataset.rate;
+        }
+      });
+    });
+
+    if (areaInput) {
+      areaInput.addEventListener('input', () => {
+        const v = parseInt(areaInput.value.replace(/[^\d]/g, ''), 10);
+        if (v > 0) state.sqft = v;
+      });
+    }
+
+    next && next.addEventListener('click', () => show(step + 1));
+    back && back.addEventListener('click', () => show(step - 1));
+    show(1);
+  })();
+
+  /* ---------- 18. "View project" hover bubble ---------- */
+  (function bubble() {
+    if (!window.matchMedia('(hover:hover)').matches || reduced) return;
+    const el = document.createElement('div');
+    el.className = 'bubble';
+    el.textContent = 'View';
+    el.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(el);
+    let raf = null, x = 0, y = 0;
+
+    const move = (e) => {
+      x = e.clientX; y = e.clientY;
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        el.style.transform = `translate(${x}px, ${y}px) translate(-50%,-50%) ` +
+          (el.classList.contains('is-on') ? 'scale(1)' : 'scale(0)');
+        raf = null;
+      });
+    };
+
+    $$('.tile, .serv, .post').forEach((card) => {
+      card.addEventListener('mouseenter', () => {
+        el.textContent = card.classList.contains('post') ? 'Read' : 'View';
+        el.classList.add('is-on');
+      });
+      card.addEventListener('mouseleave', () => el.classList.remove('is-on'));
+    });
+    document.addEventListener('mousemove', move, { passive: true });
+  })();
+
+  /* ---------- 19. Smooth in-page scroll with header offset ---------- */
+  (function smoothAnchors() {
+    document.addEventListener('click', (e) => {
+      const a = e.target.closest('a[href^="#"]');
+      if (!a) return;
+      const id = a.getAttribute('href');
+      if (id === '#' || id.length < 2) return;
+      const target = document.querySelector(id);
+      if (!target) return;
+      e.preventDefault();
+      const header = $('.header');
+      const offset = (header ? header.getBoundingClientRect().height : 0) + 16;
+      const top = target.getBoundingClientRect().top + window.scrollY - offset;
+      window.scrollTo({ top, behavior: reduced ? 'auto' : 'smooth' });
+      history.replaceState(null, '', id);
     });
   })();
 
