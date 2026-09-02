@@ -627,10 +627,9 @@ ul{margin:0;padding:0}
 
 /* ---------- 31. Before / after slider ---------- */
 .ba{position:relative;overflow:hidden;border-radius:var(--radius);aspect-ratio:3/4;max-width:520px;margin-inline:auto;user-select:none;touch-action:pan-y;cursor:ew-resize}
-.ba__img{position:absolute;inset:0}
+.ba__img{position:absolute;inset:0;width:100%;height:100%}
 .ba__img .ph{width:100%;height:100%;border-radius:0}
-.ba__img--before{width:50%;border-right:2px solid var(--gold)}
-.ba__img--before .ph>img{width:100vw;max-width:none;height:100%}
+.ba__img--before{clip-path:inset(0 50% 0 0);border-right:2px solid var(--gold)}
 .ba__tag{position:absolute;bottom:14px;left:14px;background:rgba(19,34,29,.72);color:#fff;font-size:var(--fs-xs);letter-spacing:.14em;text-transform:uppercase;padding:6px 13px;border-radius:2px;backdrop-filter:blur(4px)}
 .ba__img--after .ba__tag{left:auto;right:14px}
 .ba__handle{position:absolute;top:0;bottom:0;left:50%;width:46px;transform:translateX(-50%);display:grid;place-items:center;cursor:ew-resize}

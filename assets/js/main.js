@@ -490,7 +490,7 @@
 
       const set = (pct) => {
         const p = Math.max(0, Math.min(100, pct));
-        before.style.width = p + '%';
+        before.style.clipPath = `inset(0 ${100 - p}% 0 0)`;
         handle.style.left = p + '%';
         handle.setAttribute('aria-valuenow', Math.round(p));
       };
