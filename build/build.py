@@ -131,7 +131,7 @@ def header(active=""):
     <li{A('home')}><a href="{rel()}index.html">Home</a></li>
     <li{A('studio')}><a href="{rel()}studio.html">Studio</a></li>
     <li class="has-menu"><button class="nav__trigger" aria-expanded="false">Work {SVG['chev']}</button>
-      <ul class="dropdown">{verts}<li><a href="{rel()}gallery.html">Full gallery</a></li></ul></li>
+      <ul class="dropdown">{verts}<li><a href="{rel()}gallery.html">Full gallery</a></li><li><a href="{rel()}before-after.html">Before &amp; after</a></li></ul></li>
     <li class="has-menu"><button class="nav__trigger" aria-expanded="false">Services {SVG['chev']}</button>
       <ul class="dropdown">{servs}</ul></li>
     <li{A('packages')}><a href="{rel()}packages.html">Packages</a></li>
@@ -164,7 +164,7 @@ def drawer():
     <li><a href="{rel()}index.html">Home</a></li>
     <li><a href="{rel()}studio.html">Studio</a></li>
     <li><button class="acc__btn" type="button">Work {SVG['chev']}</button>
-      <div class="acc__panel">{verts}<a href="{rel()}gallery.html">Full gallery</a></div></li>
+      <div class="acc__panel">{verts}<a href="{rel()}gallery.html">Full gallery</a><a href="{rel()}before-after.html">Before &amp; after</a></div></li>
     <li><button class="acc__btn" type="button">Services {SVG['chev']}</button>
       <div class="acc__panel">{servs}</div></li>
     <li><a href="{rel()}packages.html">Packages</a></li>
@@ -295,6 +295,7 @@ def footer():
              ("FAQ", "faq.html"), ("Contact", "contact.html"), ("Sitemap", "sitemap.html")]
     q = "".join(f'<li><a href="{rel()}{u}">{t}</a></li>' for t, u in quick)
     w = "".join(f'<li><a href="{rel()}work/{v["slug"]}.html">{v["name"]}</a></li>' for v in VERTICALS)
+    w += f'<li><a href="{rel()}before-after.html">Before &amp; after</a></li>'
     a = "".join(f'<li><a href="{rel()}areas/{s}.html">{n}</a></li>' for s, n, _ in SERVICE_AREAS)
     soc = (f'<a href="{BRAND["instagram"]}" target="_blank" rel="noopener" aria-label="Instagram">{SOCIAL_SVG["Instagram"]}</a>'
            f'<a href="{BRAND["facebook"]}" target="_blank" rel="noopener" aria-label="Facebook">{SOCIAL_SVG["Facebook"]}</a>'
@@ -371,20 +372,26 @@ def societies_block():
 </div></section>"""
 
 
+def ba_slider(pair):
+    return f"""<div class="ba" data-ba>
+    <div class="ba__img ba__img--after">{img(pair['after'], '')}<span class="ba__tag">After</span></div>
+    <div class="ba__img ba__img--before">{img(pair['before'], '')}<span class="ba__tag">Before</span></div>
+    <div class="ba__handle" role="slider" tabindex="0" aria-label="Reveal before or after"
+         aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"><span></span></div>
+  </div>"""
+
+
 def beforeafter_block():
+    pair = BEFORE_AFTER[0]
     return f"""
 <section class="section"><div class="container container--narrow">
   <div class="section-head section-head--center">
     <span class="eyebrow">Before &amp; after</span>
     <h2 class="section-title">Drag to see the transformation</h2><div class="rule"></div>
   </div>
-  <div class="ba" data-ba>
-    <div class="ba__img ba__img--after">{img('plat-living-classical', '')}<span class="ba__tag">After</span></div>
-    <div class="ba__img ba__img--before">{img('res-lobby-slat', '')}<span class="ba__tag">Before</span></div>
-    <div class="ba__handle" role="slider" tabindex="0" aria-label="Reveal before or after"
-         aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"><span></span></div>
-  </div>
-  <p class="fineprint">Bare-shell handover on the left, finished interior on the right.</p>
+  {ba_slider(pair)}
+  <p class="fineprint">Bare-shell handover on the left, finished interior on the right &mdash; {pair['title']}, {pair['where']}.</p>
+  <p class="cta__row" style="justify-content:center"><a class="btn btn--ghost" href="{rel()}before-after.html">See more before &amp; after {SVG['arrow']}</a></p>
 </div></section>"""
 
 
@@ -427,7 +434,7 @@ def calculator_block():
         <span class="calc__figure">&mdash;</span>
         <span class="calc__meta"></span>
       </div>
-      <p class="calc__note">Indicative only. The exact figure is locked after 3D approval through a signed BOQ. Execution is exclusive of 18% GST; the {DESIGN_FEE['rate']}/sq. ft. design fee is billed separately.</p>
+      <p class="calc__note">Indicative only. The exact figure is locked after 3D approval through a signed BOQ. The {DESIGN_FEE['rate']}/sq. ft. design fee is billed separately from execution.</p>
       <div class="calc__gate">
         <p>Send this estimate to yourself and we will follow up with a detailed breakdown.</p>
         {form("calculator", "Send me this estimate", compact=True)}
@@ -542,7 +549,7 @@ def packages_block(heading=True):
     </div>""" if heading else ""
     return f"""<section class="section"><div class="container">{head_}
   <div class="packages">{cards}</div>
-  <p class="fineprint">Rates are per square foot of carpet area and exclusive of 18% GST. Final figures are locked after 3D approval through a signed BOQ.</p>
+  <p class="fineprint">Rates are per square foot of carpet area. Final figures are locked after 3D approval through a signed BOQ.</p>
 </div></section>"""
 
 
@@ -559,13 +566,11 @@ def design_fee_block():
     <div class="fee__main">
       <span class="fee__rate">{f['rate']}</span>
       <span class="fee__unit">per sq. ft.</span>
-      <p class="fee__note">Design fee, inclusive of 18% GST</p>
+      <p class="fee__note">Design fee, all-inclusive</p>
     </div>
     <div class="fee__example">
       <h4>Worked example &mdash; {f['example_area']}</h4>
       <dl>
-        <div><dt>Base amount</dt><dd>{f['example_base']}</dd></div>
-        <div><dt>GST at 18%</dt><dd>{f['example_gst']}</dd></div>
         <div class="fee__total"><dt>Total design fee</dt><dd>{f['example_total']}</dd></div>
       </dl>
       <p class="fineprint" style="text-align:left;margin-top:14px">Billed separately from execution, so you always know what design costs on its own.</p>
@@ -998,6 +1003,29 @@ def build_gallery():
          body, og="htl-lobby-chandelier")
 
 
+def build_before_after():
+    depth(0)
+    cards = ""
+    for i, pair in enumerate(BEFORE_AFTER):
+        cards += f"""<div class="reveal" data-d="{i % 3}" style="margin-bottom:56px">
+      {ba_slider(pair)}
+      <p class="fineprint" style="margin-top:14px"><strong>{pair['title']}</strong> &mdash; {pair['where']}. {pair['note']}</p>
+    </div>"""
+    body = f"""
+{banner("Before &amp; After", "Before &amp; After", "ba04-office-after",
+        "Drag each slider to see the same space before we started and after handover. Every pair on this page is one of our own projects — no stock photography.")}
+<section class="section"><div class="container container--narrow">
+  {cards}
+</div></section>
+{cta("Want your own before &amp; after story?",
+     "Send us your floor plan or site photos and we will walk you through what a full turnkey transformation would look like.",
+     "before-after-cta")}
+{consult()}"""
+    page("before-after.html", "Before &amp; after gallery | Feel The Space",
+         "Real before-and-after transformations from Feel The Space — kitchens, bedrooms, offices, corridors and living rooms across Delhi NCR.",
+         body, "work", og="ba04-office-after")
+
+
 def build_studio():
     depth(0)
     body = f"""
@@ -1145,6 +1173,7 @@ def build_faq_contact_sitemap():
         links.append(f'<li><a href="{u}">{t}</a></li>')
     for v in VERTICALS:
         links.append(f'<li><a href="work/{v["slug"]}.html">{v["title"]} — {v["name"]}</a></li>')
+    links.append('<li><a href="before-after.html">Before &amp; after</a></li>')
     for s, n, _ in SERVICE_AREAS:
         links.append(f'<li><a href="areas/{s}.html">Interior designers in {n}</a></li>')
     for s, t, _, _, _, _ in POSTS:
@@ -1157,7 +1186,7 @@ def build_faq_contact_sitemap():
 
 def build_extras():
     urls = ["index.html", "studio.html", "services.html", "packages.html", "process.html",
-            "gallery.html", "journal.html", "faq.html", "contact.html", "sitemap.html"]
+            "gallery.html", "before-after.html", "journal.html", "faq.html", "contact.html", "sitemap.html"]
     urls += [f"work/{v['slug']}.html" for v in VERTICALS]
     urls += [f"areas/{s}.html" for s, _, _ in SERVICE_AREAS]
     urls += [f"journal/{s}.html" for s, _, _, _, _, _ in POSTS]
@@ -1176,6 +1205,7 @@ if __name__ == "__main__":
     build_work()
     build_areas()
     build_gallery()
+    build_before_after()
     build_studio()
     build_journal()
     build_faq_contact_sitemap()

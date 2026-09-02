@@ -67,8 +67,7 @@ DESIGN_FEE = {
     "note": "Design and consultation are priced transparently and kept separate from execution.",
     "example_area": "1,275 sq. ft.",
     "example_base": "₹1,91,250",
-    "example_gst": "₹34,425",
-    "example_total": "₹2,25,675",
+    "example_total": "₹1,91,250",
 }
 
 CORE_SCOPE = [
@@ -199,7 +198,6 @@ TERMS = [
     ("Carpet Area", "All package rates are calculated on the measured carpet area of your property."),
     ("BOQ Locking", "Final payment milestones and the execution schedule are locked after 3D approval, through the signed BOQ."),
     ("Allowances", "Gold and Platinum soft furnishings and bathroom fittings follow agreed brand and rate allowances."),
-    ("GST", "18% GST is applicable extra on turnkey execution billing. The design fee is quoted inclusive of GST."),
 ]
 
 VERTICALS = [
@@ -277,15 +275,13 @@ STATS = [
 
 FAQS = [
     ("How is the design fee calculated?",
-     "At ₹150 per square foot of carpet area. For a 1,275 sq. ft. home that is ₹1,91,250 plus 18% GST of ₹34,425 — ₹2,25,675 in total. It is quoted and billed separately from execution so you can see exactly what design costs."),
+     "At ₹150 per square foot of carpet area. For a 1,275 sq. ft. home that is ₹1,91,250 in total. It is quoted and billed separately from execution so you can see exactly what design costs."),
     ("What do I get for the design fee?",
      "Five deliverables: 2D space planning, 3D visualisation of the key rooms, detailed execution drawings for carpentry and furniture, an RCP with electrical layouts, and a material specification chart with a detailed BOQ."),
     ("What is the difference between Silver, Gold and Platinum?",
      "The base scope is the same in all three — what changes is the finish level. Silver uses advance decorative laminates. Gold adds architectural moulding, satin and PU-enamel doors, veneer accents and soft furnishings. Platinum adds CNC and fluted panelling, Italian PU, full bathroom transformation and smart lighting."),
     ("Are the package rates final?",
      "The per-square-foot rate gives you a reliable budget from day one. The exact figure is locked after you approve the 3D, through a signed BOQ — that document then governs payment milestones and the execution schedule."),
-    ("Is GST included in the package price?",
-     "No. Execution package values are exclusive of 18% GST. Only the design fee is quoted inclusive of GST."),
     ("Which brands do you use?",
      "Sainik 710 BWP marine plywood for kitchen bases, Century MR grade for overheads, Hettich soft-close hinges and channels, InnoTech drawers, Asian Paints emulsions, and Jaquar or Kohler bathroom fixtures on Platinum."),
     ("Do you work outside Greater Noida West?",
@@ -296,7 +292,7 @@ FAQS = [
 
 TESTIMONIALS = [
     ("Vinita S.", "Gaur City, Greater Noida West",
-     "What sold me was the proposal itself. Everything was written down — the rate, the GST, what was in the base scope, what changed if I upgraded. Nobody else gave me numbers that clear before I paid anything."),
+     "What sold me was the proposal itself. Everything was written down — the rate, what was in the base scope, what changed if I upgraded. Nobody else gave me numbers that clear before I paid anything."),
     ("Rohit & Anjali", "Noida Sector 137",
      "The 3D was accurate. Our living room actually looks like the render, down to the cove lighting. That sounds like a low bar until you have been through a project where it wasn't."),
     ("Amit K.", "Indirapuram, Ghaziabad",
@@ -312,12 +308,35 @@ TESTIMONIALS = [
 # Video testimonials. Set "video" to a filename in assets/video/ (no extension)
 # and "poster" to an image in assets/img/ once the clips are ready.
 VIDEO_TESTIMONIALS = [
-    {"name": "Client name", "where": "Gaur Saundaryam, Greater Noida West",
-     "line": "30-second clip — handover day walkthrough.", "video": None, "poster": "res-living-dining-wide"},
-    {"name": "Client name", "where": "Ajnara Ambrosia, Noida",
-     "line": "30-second clip — kitchen and wardrobes.", "video": None, "poster": "res-kitchen-island"},
-    {"name": "Client name", "where": "Unninav Utopia, Ghaziabad",
-     "line": "30-second clip — living and dining.", "video": None, "poster": "res-living-panelled"},
+    {"name": "CA Sanjeev Tiwari", "where": "NX One, Greater Noida West",
+     "line": "In his own words — handover walkthrough.", "video": "testimonial-sanjeev-tiwari", "poster": "testimonial-sanjeev-tiwari-poster"},
+    {"name": "CA Kiran Dubey", "where": "NX One, Greater Noida West",
+     "line": "In her own words — handover walkthrough.", "video": "testimonial-kiran-dubey", "poster": "testimonial-kiran-dubey-poster"},
+    {"name": "Mr. Anurag Tiwari", "where": "Office project, NX One, Greater Noida West",
+     "line": "In his own words — office fit-out walkthrough.", "video": "testimonial-anurag-tiwari", "poster": "testimonial-anurag-tiwari-poster"},
+]
+
+# Before / after pairs — reusable block, shown on the home page and on the
+# dedicated before-after.html gallery. Add new pairs here as projects land.
+BEFORE_AFTER = [
+    {"title": "Modular Kitchen", "where": "Greater Noida West",
+     "note": "Bare civil shell turned into a full L-shaped modular kitchen on Sainik 710 BWP with soft-close hardware.",
+     "before": "ba01-kitchen-before", "after": "ba01-kitchen-after"},
+    {"title": "Bedroom & TV Unit", "where": "Greater Noida West",
+     "note": "An empty room becomes a finished bedroom with a marble-panelled TV wall and warm cove lighting.",
+     "before": "ba02-room-before", "after": "ba02-tvunit-after"},
+    {"title": "Foyer & Entrance", "where": "Greater Noida West",
+     "note": "Plastered walls and bare doors transformed into a lit entrance with mirror work and storage.",
+     "before": "ba03-hallway-before", "after": "ba03-entrance-after"},
+    {"title": "Office Fit-out", "where": "NX One, Greater Noida West",
+     "note": "A stripped-down shell, wires and all, turned into a finished coworking floor ready for handover.",
+     "before": "ba04-shell-before", "after": "ba04-office-after"},
+    {"title": "Living Room", "where": "Greater Noida West",
+     "note": "Raw flooring and open windows become a furnished living room with a statement chandelier.",
+     "before": "ba05-window-before", "after": "ba07-living-after"},
+    {"title": "Common Corridor", "where": "NX One, Greater Noida West",
+     "note": "An unplastered brick-and-conduit passage finished into a tiled, lit common corridor.",
+     "before": "ba06-corridor-before", "after": "ba06-corridor-after"},
 ]
 
 POSTS = [
@@ -393,4 +412,20 @@ ALT = {
  "res-walkthrough-poster": "Still from the residential project walkthrough",
  "htl-walkthrough-poster": "Still from the hospitality project walkthrough",
  "res-kitchen-tour-poster": "Still from the modular kitchen walkthrough",
+ "ba01-kitchen-before": "Bare civil-finish kitchen before renovation, tiled dado and unfinished counter",
+ "ba01-kitchen-after": "Finished modular kitchen with white cabinetry, gold trim and pendant lighting",
+ "ba02-room-before": "Empty plastered room before interior work, bare floor and single door",
+ "ba02-tvunit-after": "Finished bedroom TV unit wall in book-matched marble with a wooden feature door",
+ "ba03-hallway-before": "Unfinished room with multiple doors before interior work",
+ "ba03-entrance-after": "Finished entrance passage with mirror, chandelier and fitted storage",
+ "ba04-shell-before": "Bare concrete shell mid-construction with exposed ceiling grid and debris",
+ "ba04-office-after": "Finished coworking office floor with workstations and exposed black ceiling",
+ "ba05-window-before": "Unfinished living room with bare marble flooring and glazed window openings",
+ "ba05-bedroom-after": "Finished hotel-style bedroom with a maroon and white bed runner",
+ "ba06-corridor-before": "Under-construction corridor with exposed brickwork and ceiling conduit",
+ "ba06-corridor-after": "Finished hotel corridor with wainscoting, patterned flooring and pendant lights",
+ "ba07-living-after": "Finished living room with a circular crystal chandelier and beige upholstered sofas",
+ "testimonial-sanjeev-tiwari-poster": "Video testimonial still — CA Sanjeev Tiwari, NX One",
+ "testimonial-kiran-dubey-poster": "Video testimonial still — CA Kiran Dubey, NX One",
+ "testimonial-anurag-tiwari-poster": "Video testimonial still — Mr. Anurag Tiwari, NX One office project",
 }
