@@ -68,7 +68,7 @@ DESIGN_FEE = {
     "example_area": "1,275 sq. ft.",
     "example_base": "₹1,91,250",
     "example_gst": "₹34,425",
-    "example_total": "₹2,25,675",
+    "example_total": "₹1,91,250",
 }
 
 CORE_SCOPE = [
@@ -277,7 +277,7 @@ STATS = [
 
 FAQS = [
     ("How is the design fee calculated?",
-     "At ₹150 per square foot of carpet area, without GST. For a 1,275 sq. ft. home that is ₹1,91,250 plus 18% GST of ₹34,425 — ₹2,25,675 in total. It is quoted and billed separately from execution so you can see exactly what design costs."),
+     "At ₹150 per square foot of carpet area, without GST. For a 1,275 sq. ft. home that is ₹1,91,250 in total. It is quoted and billed separately from execution so you can see exactly what design costs."),
     ("Is GST included in the price?",
      "No. Both the design fee and the execution package rates are shown without GST, which is charged extra at the applicable rate as per your invoice."),
     ("What do I get for the design fee?",

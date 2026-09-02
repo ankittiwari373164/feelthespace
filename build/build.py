@@ -571,8 +571,6 @@ def design_fee_block():
     <div class="fee__example">
       <h4>Worked example &mdash; {f['example_area']}</h4>
       <dl>
-        <div><dt>Base amount</dt><dd>{f['example_base']}</dd></div>
-        <div><dt>GST at 18%</dt><dd>{f['example_gst']}</dd></div>
         <div class="fee__total"><dt>Total design fee</dt><dd>{f['example_total']}</dd></div>
       </dl>
       <p class="fineprint" style="text-align:left;margin-top:14px">Billed separately from execution, so you always know what design costs on its own.</p>
