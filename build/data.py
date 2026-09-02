@@ -64,10 +64,11 @@ DELIVERABLES = [
 
 DESIGN_FEE = {
     "rate": "₹150",
-    "note": "Design and consultation are priced transparently and kept separate from execution.",
+    "note": "Design and consultation are priced transparently and kept separate from execution, without GST.",
     "example_area": "1,275 sq. ft.",
     "example_base": "₹1,91,250",
-    "example_total": "₹1,91,250",
+    "example_gst": "₹34,425",
+    "example_total": "₹2,25,675",
 }
 
 CORE_SCOPE = [
@@ -198,6 +199,7 @@ TERMS = [
     ("Carpet Area", "All package rates are calculated on the measured carpet area of your property."),
     ("BOQ Locking", "Final payment milestones and the execution schedule are locked after 3D approval, through the signed BOQ."),
     ("Allowances", "Gold and Platinum soft furnishings and bathroom fittings follow agreed brand and rate allowances."),
+    ("GST", "18% GST is charged extra on both the design fee and turnkey execution billing. All quoted rates are shown without GST."),
 ]
 
 VERTICALS = [
@@ -275,13 +277,15 @@ STATS = [
 
 FAQS = [
     ("How is the design fee calculated?",
-     "At ₹150 per square foot of carpet area. For a 1,275 sq. ft. home that is ₹1,91,250 in total. It is quoted and billed separately from execution so you can see exactly what design costs."),
+     "At ₹150 per square foot of carpet area, without GST. For a 1,275 sq. ft. home that is ₹1,91,250 plus 18% GST of ₹34,425 — ₹2,25,675 in total. It is quoted and billed separately from execution so you can see exactly what design costs."),
+    ("Is GST included in the price?",
+     "No. Both the design fee and the execution package rates are shown without GST, which is charged extra at the applicable rate as per your invoice."),
     ("What do I get for the design fee?",
      "Five deliverables: 2D space planning, 3D visualisation of the key rooms, detailed execution drawings for carpentry and furniture, an RCP with electrical layouts, and a material specification chart with a detailed BOQ."),
     ("What is the difference between Silver, Gold and Platinum?",
      "The base scope is the same in all three — what changes is the finish level. Silver uses advance decorative laminates. Gold adds architectural moulding, satin and PU-enamel doors, veneer accents and soft furnishings. Platinum adds CNC and fluted panelling, Italian PU, full bathroom transformation and smart lighting."),
     ("Are the package rates final?",
-     "The per-square-foot rate gives you a reliable budget from day one. The exact figure is locked after you approve the 3D, through a signed BOQ — that document then governs payment milestones and the execution schedule."),
+     "The per-square-foot rate gives you a reliable budget from day one, without GST. The exact figure is locked after you approve the 3D, through a signed BOQ — that document then governs payment milestones and the execution schedule."),
     ("Which brands do you use?",
      "Sainik 710 BWP marine plywood for kitchen bases, Century MR grade for overheads, Hettich soft-close hinges and channels, InnoTech drawers, Asian Paints emulsions, and Jaquar or Kohler bathroom fixtures on Platinum."),
     ("Do you work outside Greater Noida West?",
@@ -292,7 +296,7 @@ FAQS = [
 
 TESTIMONIALS = [
     ("Vinita S.", "Gaur City, Greater Noida West",
-     "What sold me was the proposal itself. Everything was written down — the rate, what was in the base scope, what changed if I upgraded. Nobody else gave me numbers that clear before I paid anything."),
+     "What sold me was the proposal itself. Everything was written down — the rate, the GST, what was in the base scope, what changed if I upgraded. Nobody else gave me numbers that clear before I paid anything."),
     ("Rohit & Anjali", "Noida Sector 137",
      "The 3D was accurate. Our living room actually looks like the render, down to the cove lighting. That sounds like a low bar until you have been through a project where it wasn't."),
     ("Amit K.", "Indirapuram, Ghaziabad",

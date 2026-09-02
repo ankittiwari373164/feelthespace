@@ -434,7 +434,7 @@ def calculator_block():
         <span class="calc__figure">&mdash;</span>
         <span class="calc__meta"></span>
       </div>
-      <p class="calc__note">Indicative only. The exact figure is locked after 3D approval through a signed BOQ. The {DESIGN_FEE['rate']}/sq. ft. design fee is billed separately from execution.</p>
+      <p class="calc__note">Indicative only, without GST. The exact figure is locked after 3D approval through a signed BOQ. The {DESIGN_FEE['rate']}/sq. ft. design fee is billed separately from execution, also without GST.</p>
       <div class="calc__gate">
         <p>Send this estimate to yourself and we will follow up with a detailed breakdown.</p>
         {form("calculator", "Send me this estimate", compact=True)}
@@ -549,7 +549,7 @@ def packages_block(heading=True):
     </div>""" if heading else ""
     return f"""<section class="section"><div class="container">{head_}
   <div class="packages">{cards}</div>
-  <p class="fineprint">Rates are per square foot of carpet area. Final figures are locked after 3D approval through a signed BOQ.</p>
+  <p class="fineprint">Rates are per square foot of carpet area, without GST. Final figures are locked after 3D approval through a signed BOQ.</p>
 </div></section>"""
 
 
@@ -566,11 +566,13 @@ def design_fee_block():
     <div class="fee__main">
       <span class="fee__rate">{f['rate']}</span>
       <span class="fee__unit">per sq. ft.</span>
-      <p class="fee__note">Design fee, all-inclusive</p>
+      <p class="fee__note">Design fee, without GST</p>
     </div>
     <div class="fee__example">
       <h4>Worked example &mdash; {f['example_area']}</h4>
       <dl>
+        <div><dt>Base amount</dt><dd>{f['example_base']}</dd></div>
+        <div><dt>GST at 18%</dt><dd>{f['example_gst']}</dd></div>
         <div class="fee__total"><dt>Total design fee</dt><dd>{f['example_total']}</dd></div>
       </dl>
       <p class="fineprint" style="text-align:left;margin-top:14px">Billed separately from execution, so you always know what design costs on its own.</p>
