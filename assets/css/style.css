@@ -626,7 +626,7 @@ ul{margin:0;padding:0}
 .soc li::before{content:"";position:absolute;left:0;top:11px;width:5px;height:5px;border-radius:50%;background:var(--gold-lt)}
 
 /* ---------- 31. Before / after slider ---------- */
-.ba{position:relative;overflow:hidden;border-radius:var(--radius);aspect-ratio:16/10;user-select:none;touch-action:pan-y;cursor:ew-resize}
+.ba{position:relative;overflow:hidden;border-radius:var(--radius);aspect-ratio:3/4;max-width:520px;margin-inline:auto;user-select:none;touch-action:pan-y;cursor:ew-resize}
 .ba__img{position:absolute;inset:0}
 .ba__img .ph{width:100%;height:100%;border-radius:0}
 .ba__img--before{width:50%;border-right:2px solid var(--gold)}
