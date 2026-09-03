@@ -72,7 +72,7 @@ def logo(light=False):
 
 
 # ---------------------------------------------------------------- chrome
-def head(title, desc, canon, og="res-living-dining-wide"):
+def head(title, desc, canon, og="og-share"):
     ld = f'''{{"@context":"https://schema.org","@type":"InteriorDesigner",
 "name":"Feel The Space","logo":"{DOMAIN}assets/img/logo.png","image":"{DOMAIN}assets/img/{og}.jpg","@id":"{DOMAIN}",
 "url":"{DOMAIN}","telephone":"{BRAND['phone']}","email":"{BRAND['email']}",
@@ -503,7 +503,7 @@ def write(path, html):
     open(full, "w", encoding="utf-8").write(html)
 
 
-def page(path, title, desc, body, active="", og="res-living-dining-wide"):
+def page(path, title, desc, body, active="", og="og-share"):
     write(path, head(title, desc, path, og) + utility() + header(active) + body + footer())
 
 
