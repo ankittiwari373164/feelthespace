@@ -64,7 +64,7 @@ DELIVERABLES = [
 
 DESIGN_FEE = {
     "rate": "₹150",
-    "note": "Design and consultation are priced transparently and kept separate from execution, without GST.",
+    "note": "Design and consultation are priced transparently and kept separate from execution.",
     "example_area": "1,275 sq. ft.",
     "example_base": "₹1,91,250",
     "example_gst": "₹34,425",
