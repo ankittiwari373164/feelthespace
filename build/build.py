@@ -530,7 +530,7 @@ def core_scope_work_block():
     <span class="eyebrow">How we work</span>
     <h2 class="section-title">Core Base Scope of Work</h2><div class="rule"></div>
   </div>
-  <div class="delivs">{cards}</div>
+  <div class="delivs delivs--4col">{cards}</div>
 </div></section>"""
 
 
