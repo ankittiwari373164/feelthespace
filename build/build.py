@@ -514,6 +514,26 @@ def stats_block():
     return f'<section class="stats"><div class="container"><div class="stats__grid">{items}</div></div></section>'
 
 
+def core_scope_work_block():
+    items = [
+        ("Requirement & Space Mapping", "Detailed discussion on needs, space utilization, and functional guidelines."),
+        ("2D Layout & Spatial Planning", "Customized 2D floor plans with furniture layout."),
+        ("Concept & Mood Boarding", "Curated reference images, color palettes, and material direction for aesthetic clarity."),
+        ("Photorealistic 3D Rendering", "High-definition 3D visuals of approved 2D layouts before execution."),
+    ]
+    cards = "".join(f"""<div class="deliv reveal" data-d="{i}">
+      <span class="deliv__num">{i+1:02d}</span><h3>{t}</h3><p>{d}</p></div>"""
+      for i, (t, d) in enumerate(items))
+    return f"""
+<section class="section section--paper"><div class="container">
+  <div class="section-head section-head--center">
+    <span class="eyebrow">How we work</span>
+    <h2 class="section-title">Core Base Scope of Work</h2><div class="rule"></div>
+  </div>
+  <div class="delivs">{cards}</div>
+</div></section>"""
+
+
 def phases_block(paper=False):
     cards = "".join(f"""<div class="phase reveal" data-d="{i}">
       <span class="phase__num">{n}</span>
@@ -738,7 +758,7 @@ def build_home():
 </section>
 {stats_block()}
 {verticals_block()}
-{phases_block(paper=True)}
+{core_scope_work_block()}
 {design_fee_block()}
 {packages_block()}
 <section class="section section--paper"><div class="container">
