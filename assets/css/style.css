@@ -328,6 +328,9 @@ ul{margin:0;padding:0}
 .phase p{margin:0;font-size:var(--fs-sm)}
 
 .delivs{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.delivs--4col{grid-template-columns:repeat(4,1fr)}
+@media(max-width:900px){.delivs--4col{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.delivs--4col{grid-template-columns:1fr}}
 .deliv{background:var(--navy-2);border-radius:var(--radius-lg);padding:28px}
 .deliv__num{font-size:var(--fs-xs);letter-spacing:.2em;color:var(--gold);display:block;margin-bottom:10px}
 .deliv h3{color:#fff;margin-bottom:8px}
