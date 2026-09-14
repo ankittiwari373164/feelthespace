@@ -6,6 +6,8 @@ from data import *
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 DOMAIN = "https://www.feelthespace.in/"
+GSC_VERIFY = "aAekA7Oxus-YmQHmC_E_6qf22EqkkjdT_VieALOtKro"
+GA_ID = "G-KY6C9QHJ5W"
 D = {"d": 0}
 
 
@@ -72,7 +74,71 @@ def logo(light=False):
 
 
 # ---------------------------------------------------------------- chrome
+KEYWORDS_DEFAULT = ["interior designer in Greater Noida West", "interior designers in Noida",
+                    "turnkey interior execution Delhi NCR", "modular kitchen Greater Noida West"]
+
+KEYWORDS_BY_PAGE = {
+ "index.html": ["interior designer in Greater Noida West", "interior designers in Noida",
+   "best interior designer Noida Extension", "home interior design Gaur City",
+   "turnkey interior execution Delhi NCR", "modular kitchen Greater Noida West",
+   "interior design cost per sq ft Noida", "office interior designer Noida",
+   "hotel interior designer Delhi NCR", "Feel The Space"],
+ "packages.html": ["interior design cost per sq ft Noida", "3BHK interior design cost Greater Noida West",
+   "interior design packages Delhi NCR", "turnkey interior package price",
+   "modular kitchen price Noida", "luxury interior design Noida Extension"],
+ "process.html": ["interior design process India", "interior design deliverables",
+   "what is BOQ in interiors", "interior design drawings 2D 3D"],
+ "services.html": ["modular kitchen designer Noida", "wardrobe designer Greater Noida West",
+   "false ceiling contractor Noida", "3D interior visualisation India"],
+ "gallery.html": ["interior design gallery Noida", "interior design photos India",
+   "completed interior projects Greater Noida West"],
+ "before-after.html": ["interior before and after India", "home renovation before after Noida",
+   "flat interior transformation Greater Noida West", "modular kitchen before after"],
+ "studio.html": ["interior design studio Greater Noida West", "about Feel The Space",
+   "interior design company Noida Extension"],
+ "journal.html": ["interior design blog India", "interior design tips Noida"],
+ "faq.html": ["interior design fee Noida", "interior design GST India",
+   "what is BOQ interior design", "Sainik 710 vs Century MR"],
+ "contact.html": ["interior designer near me Greater Noida West",
+   "interior design studio Gaur City Mall", "free interior design consultation Noida"],
+}
+
+_AREA_NAMES = {s_: n for s_, n, _ in SERVICE_AREAS}
+
+
+def keywords_for(canon):
+    if canon in KEYWORDS_BY_PAGE:
+        return KEYWORDS_BY_PAGE[canon]
+    slug = os.path.basename(canon).replace(".html", "")
+    if canon.startswith("areas/"):
+        n = _AREA_NAMES.get(slug, slug)
+        return [f"interior designer in {n}", f"interior designers in {n}",
+                f"best interior designer {n}", f"home interior design {n}",
+                f"modular kitchen {n}", f"turnkey interiors {n}",
+                f"interior design cost {n}", f"office interior designer {n}"]
+    if canon.startswith("work/"):
+        return [f"{slug} interior designer Noida", f"{slug} interior design Greater Noida West",
+                f"{slug} interior design Delhi NCR", f"{slug} fit out contractor Noida"]
+    if canon.startswith("journal/"):
+        return ["interior design blog India", "interior designer Greater Noida West"]
+    return KEYWORDS_DEFAULT
+
+
+def breadcrumb_ld(canon):
+    parts = [x for x in canon.replace(".html", "").split("/") if x and x != "index"]
+    items = [("Home", DOMAIN)]
+    trail = ""
+    for i, x in enumerate(parts):
+        trail += x + ("/" if i < len(parts) - 1 else ".html")
+        items.append((x.replace("-", " ").title(), DOMAIN + trail))
+    li = ",".join('{"@type":"ListItem","position":%d,"name":"%s","item":"%s"}' % (i + 1, n, u)
+                  for i, (n, u) in enumerate(items))
+    return '{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[%s]}' % li
+
+
 def head(title, desc, canon, og="og-share"):
+    kw = ", ".join(keywords_for(canon))
+    crumb = breadcrumb_ld(canon)
     ld = f'''{{"@context":"https://schema.org","@type":"InteriorDesigner",
 "name":"Feel The Space","logo":"{DOMAIN}assets/img/logo.png","image":"{DOMAIN}assets/img/{og}.jpg","@id":"{DOMAIN}",
 "url":"{DOMAIN}","telephone":"{BRAND['phone']}","email":"{BRAND['email']}",
@@ -86,10 +152,18 @@ def head(title, desc, canon, og="og-share"):
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="google-site-verification" content="{GSC_VERIFY}" />
 <title>{title}</title>
 <meta name="description" content="{desc}">
+<meta name="keywords" content="{kw}">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Feel The Space">
+<meta name="geo.region" content="IN-UP">
+<meta name="geo.placename" content="Greater Noida West">
 <link rel="canonical" href="{DOMAIN}{canon}">
 <meta property="og:type" content="website">
+<meta property="og:locale" content="en_IN">
+<meta property="og:url" content="{DOMAIN}{canon}">
 <meta property="og:title" content="{title}">
 <meta property="og:description" content="{desc}">
 <meta property="og:image" content="{DOMAIN}assets/img/{og}.jpg">
@@ -104,6 +178,15 @@ def head(title, desc, canon, og="og-share"):
 <link rel="apple-touch-icon" href="{rel()}assets/img/favicon-180.png">
 <link rel="stylesheet" href="{rel()}assets/css/style.css">
 <script type="application/ld+json">{ld}</script>
+<script type="application/ld+json">{crumb}</script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id={GA_ID}"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){{dataLayer.push(arguments);}}
+  gtag('js', new Date());
+  gtag('config', '{GA_ID}');
+</script>
 </head>
 <body>"""
 
