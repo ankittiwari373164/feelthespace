@@ -1,57 +1,125 @@
-# BEGIN Remove HTML Extension
+# ============================================================
+# .HTACCESS CONFIGURATION - HIDE .HTML EXTENSIONS
+# ============================================================
+# This file enables clean URLs by removing .html extensions
+# Place this in the root directory of your website
+
+# Enable Rewrite Engine
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteBase /
   
-  # Remove .html extension - allow access to files without .html
+  # ============================================================
+  # RULE 1: Remove .html from requests (external facing)
+  # ============================================================
+  # When user types: feelthespace.in/contact
+  # Server loads:   contact.html
+  
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteRule ^(.+?)/?$ $1.html [L]
   
-  # Redirect .html requests to non-.html version
-  RewriteCond %{THE_REQUEST} ^GET\ /+(.+?)\.html\ HTTP
+  # ============================================================
+  # RULE 2: Redirect direct .html URLs to clean URLs
+  # ============================================================
+  # When user types: feelthespace.in/contact.html
+  # Browser redirects to: feelthespace.in/contact (301)
+  
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{THE_REQUEST} ^[A-Z]{3,9}\ /+(.+?)\.html
   RewriteRule ^(.+?)\.html$ /$1 [R=301,L]
   
 </IfModule>
-# END Remove HTML Extension
 
-# Prevent direct access to .html files with query strings
-<IfModule mod_rewrite.c>
-  RewriteCond %{QUERY_STRING} ^$
-  RewriteRule ^(.*)\.html$ - [L]
-</IfModule>
-
-# Proper MIME types
+# ============================================================
+# MIME TYPES
+# ============================================================
 <IfModule mod_mime.c>
   AddType text/html .html
   AddType text/css .css
+  AddType text/javascript .js
   AddType application/javascript .js
-  AddEncoding gzip .svgz
+  AddType image/svg+xml .svg
+  AddType application/font-woff .woff
+  AddType application/font-woff2 .woff2
+  AddType application/json .json
 </IfModule>
 
-# Enable Gzip compression
+# ============================================================
+# GZIP COMPRESSION - Faster loading
+# ============================================================
 <IfModule mod_deflate.c>
-  AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript
+  AddOutputFilterByType DEFLATE text/plain text/html text/xml text/css text/javascript application/javascript application/json
+  AddOutputFilterByType DEFLATE image/svg+xml
 </IfModule>
 
-# Browser caching
+# ============================================================
+# BROWSER CACHING - Reduce server load
+# ============================================================
 <IfModule mod_expires.c>
   ExpiresActive On
+  
+  # HTML pages - cache for 1 week
   ExpiresByType text/html "access plus 1 week"
+  
+  # CSS and JavaScript - cache for 1 month
   ExpiresByType text/css "access plus 1 month"
   ExpiresByType application/javascript "access plus 1 month"
+  ExpiresByType text/javascript "access plus 1 month"
+  
+  # Images - cache for 1 year
   ExpiresByType image/jpeg "access plus 1 year"
   ExpiresByType image/gif "access plus 1 year"
   ExpiresByType image/png "access plus 1 year"
   ExpiresByType image/webp "access plus 1 year"
+  ExpiresByType image/svg+xml "access plus 1 year"
+  ExpiresByType image/x-icon "access plus 1 year"
+  
+  # Fonts - cache for 1 year
+  ExpiresByType application/font-woff "access plus 1 year"
+  ExpiresByType application/font-woff2 "access plus 1 year"
+  ExpiresByType application/vnd.ms-fontobject "access plus 1 year"
+  ExpiresByType application/x-font-opentype "access plus 1 year"
+  
+  # Videos - cache for 1 month
   ExpiresByType video/mp4 "access plus 1 month"
+  ExpiresByType video/webm "access plus 1 month"
+  
+  # Default caching for everything else
+  ExpiresDefault "access plus 2 days"
 </IfModule>
 
-# Disable directory listing
+# ============================================================
+# SECURITY & OPTIMIZATION
+# ============================================================
+
+# Prevent directory listing
 Options -Indexes
 
-# Security - prevent access to sensitive files
+# Prevent access to hidden files and directories
 <FilesMatch "^\.">
   Order allow,deny
   Deny from all
 </FilesMatch>
+
+# Add security headers
+<IfModule mod_headers.c>
+  Header set X-Content-Type-Options "nosniff"
+  Header set X-Frame-Options "SAMEORIGIN"
+  Header set X-XSS-Protection "1; mode=block"
+</IfModule>
+
+# ============================================================
+# REDIRECT TRAILING SLASHES (Optional)
+# Uncomment if you want www.feelthespace.in/contact/ to redirect to www.feelthespace.in/contact
+# ============================================================
+# <IfModule mod_rewrite.c>
+#   RewriteCond %{REQUEST_FILENAME} !-f
+#   RewriteCond %{REQUEST_FILENAME} !-d
+#   RewriteRule ^(.*)/$ /$1 [R=301,L]
+# </IfModule>
+
+# ============================================================
+# END OF .HTACCESS
+# ============================================================
